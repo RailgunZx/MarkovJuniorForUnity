@@ -21,6 +21,9 @@ static class Program
         foreach (XElement xmodel in xdoc.Root.Elements("model"))
         {
             string name = xmodel.Get<string>("name");
+
+            if (name != "BasicDijkstraDungeon") { continue; } // Only do this one.
+
             int linearSize = xmodel.Get("size", -1);
             int dimension = xmodel.Get("d", 2);
             int MX = xmodel.Get("length", linearSize);
@@ -44,7 +47,7 @@ static class Program
                 continue;
             }
 
-            int amount = xmodel.Get("amount", 2);
+            int amount = xmodel.Get("amount", 1);
             int pixelsize = xmodel.Get("pixelsize", 4);
             string seedString = xmodel.Get<string>("seeds", null);
             int[] seeds = seedString?.Split(' ').Select(s => int.Parse(s)).ToArray();
@@ -78,3 +81,20 @@ static class Program
         Console.WriteLine($"time = {sw.ElapsedMilliseconds}");
     }
 }
+/*
+TODO FOR UNITY:
+
+- Set output to a format which can be utilized in Unity such as char array of symbols
+- Set up program to be callable from inside of Unity
+- Re-organize file structure and make sources such as models configurable from Unity
+    - Includes looking into the resources folder for models that borrow from there.
+    - Might include recreating the model format entirely for custom functionality.
+- Create model editing utility inside of Unity
+- Look into Random class vs Unity's random and set up for determinism
+- See if I can prevent it from compiling itself or something, idk
+- Remove unnecessary features:
+    - gif output
+    - graphics output in general
+    - .vox output
+    - Non-Unity code such as Console.Writeline
+ */
